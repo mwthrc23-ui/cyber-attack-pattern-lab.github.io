@@ -33,6 +33,7 @@
   --crimson:       #ff3864;
   --crimson-dim:   #cc1f44;
   --crimson-glow:  rgba(255,56,100,.15);
+  --text-dark:     #040810;
 
   /* Borders & shadows */
   --border:        rgba(255,255,255,.07);
@@ -116,7 +117,6 @@ img, svg { display: block; }
   transition: transform .06s linear;
   will-change: transform;
 }
-
 /* ── Threat monitor widget ── */
 #threat-monitor {
   position: fixed;
@@ -413,7 +413,7 @@ img, svg { display: block; }
 
 .btn-primary {
   background: linear-gradient(135deg, var(--blue-neon), var(--blue-dim));
-  color: #03050d;
+  color: var(--bg);
   border-color: rgba(0,212,255,.5);
   box-shadow: 0 4px 18px rgba(0,212,255,.3), 0 0 40px rgba(0,212,255,.1);
   font-weight: 800;
@@ -877,7 +877,7 @@ h1 {
   display: grid;
   place-items: center;
   font-weight: 900;
-  color: #040810;
+  color: var(--text-dark);
   font-size: .95rem;
   box-shadow: 0 0 20px rgba(0,255,179,.5), 0 0 40px rgba(56,178,255,.2);
   flex-shrink: 0;
