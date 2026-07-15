@@ -1,0 +1,36 @@
+name: Docker Compose Validation
+
+on:
+  push:
+    paths:
+      - "lab-environments/docker-compose.yml"
+      - "lab-environments/**/*.yml"
+  pull_request:
+    paths:
+      - "lab-environments/docker-compose.yml"
+      - "lab-environments/**/*.yml"
+
+jobs:
+  validate-compose:
+    name: Validate Docker Compose Syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate docker-compose.yml syntax
+        working-directory: lab-environments
+        run: docker compose config --quiet
+
+      - name: Check for security best practices
+        run: |
+          echo "Checking for privileged containers..."
+          if grep -r "privileged: true" lab-environments/; then
+            echo "WARNING: Privileged containers detected — review security posture."
+          fi
+
+          echo "Checking that internal network flag is set..."
+          if ! grep -q "internal: true" lab-environments/docker-compose.yml; then
+            echo "WARNING: Isolated lab network does not have 'internal: true'. Internet access may be unintentionally enabled."
+            exit 1
+          fi
+          echo "OK: internal network isolation confirmed."

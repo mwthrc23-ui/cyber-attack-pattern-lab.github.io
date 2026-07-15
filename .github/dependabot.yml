@@ -1,0 +1,21 @@
+version: 2
+updates:
+  # Update GitHub Actions automatically
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # Update Python dependencies in pattern-extraction
+  - package-ecosystem: "pip"
+    directory: "/pattern-extraction"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "python"
