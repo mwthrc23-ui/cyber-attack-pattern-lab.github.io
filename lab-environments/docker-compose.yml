@@ -1,0 +1,40 @@
+# بيئة محاكاة معزولة لأغراض البحث الدفاعي فقط
+# لا تربط هذه الشبكة بأي شبكة إنتاجية أو بالإنترنت مباشرة
+version: "3.8"
+
+networks:
+  isolated-lab-net:
+    driver: bridge
+    internal: true   # يمنع الوصول للإنترنت من داخل الحاويات
+
+services:
+
+  # محطة عمل ضحية افتراضية لتشغيل سيناريوهات المحاكاة عليها
+  victim-workstation:
+    image: ubuntu:22.04
+    container_name: victim-workstation
+    networks:
+      - isolated-lab-net
+    tty: true
+    command: /bin/bash
+
+  # منصة SIEM مفتوحة المصدر لجمع وتحليل السجلات
+  wazuh-manager:
+    image: wazuh/wazuh-manager:4.9.0
+    container_name: wazuh-manager
+    networks:
+      - isolated-lab-net
+    ports:
+      - "1514:1514"
+      - "1515:1515"
+
+  # أداة تحليل حركة الشبكة
+  zeek-sensor:
+    image: zeek/zeek:latest
+    container_name: zeek-sensor
+    networks:
+      - isolated-lab-net
+    network_mode: "service:victim-workstation"
+
+# ملاحظة: منصة المحاكاة (MITRE Caldera) تُثبَّت وتُدار بشكل منفصل
+# حسب التعليمات الرسمية من: https://github.com/mitre/caldera
