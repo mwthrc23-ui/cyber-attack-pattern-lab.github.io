@@ -1,0 +1,50 @@
+name: Sigma Rule Validation
+
+on:
+  push:
+    paths:
+      - "defensive-solutions/sigma-rules/**/*.yml"
+  pull_request:
+    paths:
+      - "defensive-solutions/sigma-rules/**/*.yml"
+
+jobs:
+  validate-sigma:
+    name: Validate Sigma Rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install sigma-cli and SigmaHQ validators
+        run: pip install sigma-cli pysigma-validators-sigmahq
+
+      - name: Validate Sigma rules syntax
+        run: |
+          find defensive-solutions/sigma-rules -name "*.yml" | while IFS= read -r rule; do
+            echo "Checking: $rule"
+            sigma check "$rule" || exit 1
+          done
+
+  validate-yaml:
+    name: Validate YAML Syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Lint Sigma rule YAML files
+        run: |
+          yamllint -d "{extends: relaxed, rules: {line-length: {max: 120}}}" \
+            defensive-solutions/sigma-rules/
