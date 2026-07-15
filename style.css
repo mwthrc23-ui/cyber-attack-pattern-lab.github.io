@@ -244,6 +244,7 @@ img, svg { display: block; }
 .hero {
   position: relative;
   z-index: 2;
+  min-height: 100vh;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -911,8 +912,8 @@ h1 {
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
   }
   #particle-canvas { display: none; }
 }

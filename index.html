@@ -332,7 +332,19 @@
     const canvas = document.getElementById('particle-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const PARTICLE_COUNT = 70;
+    const PARTICLE_COUNT = window.innerWidth < 600 ? 30 : 70;
+    const PARTICLE_MAX_DIST = 130;
+
+    /* Typing effect timing */
+    const TYPE_SPEED_MS   = 80;
+    const DELETE_SPEED_MS = 45;
+    const PAUSE_MS        = 2200;
+
+    /* Scroll spy margins */
+    const SCROLL_SPY_MARGIN = '-40% 0px -55% 0px';
+
+    /* Reveal threshold */
+    const REVEAL_THRESHOLD = 0.12;
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -365,14 +377,13 @@
     }
 
     function drawConnections() {
-      const MAX_DIST = 130;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < MAX_DIST) {
-            const opacity = (1 - dist / MAX_DIST) * 0.18;
+          if (dist < PARTICLE_MAX_DIST) {
+            const opacity = (1 - dist / PARTICLE_MAX_DIST) * 0.18;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -420,7 +431,7 @@
         charIdx++;
         if (charIdx === phrase.length) {
           deleting = true;
-          setTimeout(typeLoop, 2200);
+          setTimeout(typeLoop, PAUSE_MS);
           return;
         }
       } else {
@@ -431,7 +442,7 @@
           phraseIdx = (phraseIdx + 1) % phrases.length;
         }
       }
-      setTimeout(typeLoop, deleting ? 45 : 80);
+      setTimeout(typeLoop, deleting ? DELETE_SPEED_MS : TYPE_SPEED_MS);
     }
     setTimeout(typeLoop, 1000);
 
@@ -460,7 +471,7 @@
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: REVEAL_THRESHOLD });
 
     document.querySelectorAll('.reveal, .reveal-child').forEach(el => revealObserver.observe(el));
 
@@ -494,7 +505,7 @@
           if (link) link.classList.add('active');
         }
       });
-    }, { rootMargin: '-40% 0px -55% 0px' });
+    }, { rootMargin: SCROLL_SPY_MARGIN });
     sections.forEach(s => scrollSpy.observe(s));
 
     /* ── Navbar sticky style ── */
