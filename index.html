@@ -12,11 +12,42 @@
 </head>
 <body>
 
+  <!-- ===== Progress bar ===== -->
+  <div id="progress-bar" aria-hidden="true"></div>
+
+  <!-- ===== Hex grid ===== -->
+  <div class="hex-grid" aria-hidden="true"></div>
+
+  <!-- ===== Matrix rain canvas ===== -->
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+
   <!-- ===== Particle canvas ===== -->
   <canvas id="particle-canvas" aria-hidden="true"></canvas>
 
+  <!-- ===== Cursor glow ===== -->
+  <div id="cursor-glow" aria-hidden="true"></div>
+
   <!-- ===== Scan line overlay ===== -->
   <div class="scan-line" aria-hidden="true"></div>
+
+  <!-- ===== Threat monitor ===== -->
+  <aside id="threat-monitor" aria-label="مؤشر مستوى التهديد">
+    <div class="monitor-header">
+      <span class="monitor-dot"></span>
+      <span>نظام المراقبة</span>
+    </div>
+    <div>
+      <div class="monitor-label">مستوى التهديد</div>
+      <div class="monitor-value low" id="threat-level-text">منخفض</div>
+    </div>
+    <div class="monitor-bar-track">
+      <div class="monitor-bar-fill" id="threat-bar" style="width:22%"></div>
+    </div>
+    <div>
+      <div class="monitor-label">الحالة</div>
+      <div class="monitor-value" style="color:var(--green-neon);font-size:.78rem;">محاكاة آمنة ✓</div>
+    </div>
+  </aside>
 
   <!-- ===== NAV ===== -->
   <header id="top">
@@ -54,6 +85,7 @@
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-glow hero-glow--blue" aria-hidden="true"></div>
     <div class="hero-glow hero-glow--green" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow--purple" aria-hidden="true"></div>
 
     <div class="container hero-content">
       <div class="kicker-wrap">
@@ -62,7 +94,7 @@
       </div>
 
       <h1 id="hero-title">
-        <span class="title-line">تحويل محاكاة الهجمات</span>
+        <span class="title-line glitch-wrap" data-text="تحويل محاكاة الهجمات">تحويل محاكاة الهجمات</span>
         <span class="title-line title-line--accent" id="typed-line" aria-live="polite">إلى قواعد كشف دقيقة</span>
       </h1>
 
@@ -71,12 +103,12 @@
       </p>
 
       <div class="hero-actions">
-        <a href="#about" class="btn btn-primary">
+        <a href="#about" class="btn btn-primary ripple-container">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
           استكشف المشروع
         </a>
         <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io"
-           target="_blank" rel="noreferrer" class="btn btn-outline">
+           target="_blank" rel="noreferrer" class="btn btn-outline ripple-container">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
           تصفح المستودع
         </a>
@@ -328,28 +360,24 @@
   (() => {
     'use strict';
 
-    /* ── Particle canvas ── */
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    const PARTICLE_COUNT = window.innerWidth < 600 ? 30 : 70;
-    const PARTICLE_MAX_DIST = 130;
-
-    /* Typing effect timing */
+    /* ── Constants ── */
+    const PARTICLE_COUNT  = window.innerWidth < 600 ? 35 : 80;
+    const PARTICLE_MAX_DIST = 140;
     const TYPE_SPEED_MS   = 80;
     const DELETE_SPEED_MS = 45;
     const PAUSE_MS        = 2200;
-
-    /* Scroll spy margins */
     const SCROLL_SPY_MARGIN = '-40% 0px -55% 0px';
+    const REVEAL_THRESHOLD  = 0.12;
 
-    /* Reveal threshold */
-    const REVEAL_THRESHOLD = 0.12;
+    /* ═══════════════════════════════════════
+       PARTICLE CANVAS
+    ═══════════════════════════════════════ */
+    const canvas = document.getElementById('particle-canvas');
+    const ctx    = canvas.getContext('2d');
+    let particles = [];
+    const COLORS = ['56,178,255', '0,255,179', '176,102,255', '255,56,100'];
 
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 
     function randomBetween(a, b) { return a + Math.random() * (b - a); }
 
@@ -357,17 +385,15 @@
       return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: randomBetween(-0.25, 0.25),
-        vy: randomBetween(-0.25, 0.25),
-        r: randomBetween(1, 2.5),
-        alpha: randomBetween(0.2, 0.6),
-        color: Math.random() > 0.5 ? '77,163,255' : '48,200,160'
+        vx: randomBetween(-0.3, 0.3),
+        vy: randomBetween(-0.3, 0.3),
+        r: randomBetween(1, 2.8),
+        alpha: randomBetween(0.2, 0.65),
+        color: COLORS[Math.floor(Math.random() * COLORS.length)]
       };
     }
 
-    function initParticles() {
-      particles = Array.from({ length: PARTICLE_COUNT }, createParticle);
-    }
+    function initParticles() { particles = Array.from({ length: PARTICLE_COUNT }, createParticle); }
 
     function drawParticle(p) {
       ctx.beginPath();
@@ -383,11 +409,11 @@
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < PARTICLE_MAX_DIST) {
-            const opacity = (1 - dist / PARTICLE_MAX_DIST) * 0.18;
+            const opacity = (1 - dist / PARTICLE_MAX_DIST) * 0.22;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(77,163,255,${opacity})`;
+            ctx.strokeStyle = `rgba(56,178,255,${opacity})`;
             ctx.lineWidth = 0.7;
             ctx.stroke();
           }
@@ -398,9 +424,8 @@
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
         drawParticle(p);
       });
@@ -408,17 +433,138 @@
       requestAnimationFrame(animateParticles);
     }
 
-    window.addEventListener('resize', () => { resize(); });
-    resize();
-    initParticles();
-    animateParticles();
+    window.addEventListener('resize', resize);
+    resize(); initParticles(); animateParticles();
 
-    /* ── Typing effect ── */
+    /* ═══════════════════════════════════════
+       MATRIX RAIN
+    ═══════════════════════════════════════ */
+    const mCanvas = document.getElementById('matrix-canvas');
+    const mCtx    = mCanvas.getContext('2d');
+    const CHARS   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&!?<>{}[]01';
+    const FONT_SZ = 13;
+    let drops = [];
+
+    function resizeMatrix() {
+      mCanvas.width  = window.innerWidth;
+      mCanvas.height = window.innerHeight;
+      const cols = Math.floor(mCanvas.width / FONT_SZ);
+      drops = Array.from({ length: cols }, () => Math.random() * -50);
+    }
+
+    function drawMatrix() {
+      mCtx.fillStyle = 'rgba(3,5,13,.06)';
+      mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
+      mCtx.font = FONT_SZ + 'px monospace';
+      drops.forEach((y, i) => {
+        const char = CHARS[Math.floor(Math.random() * CHARS.length)];
+        const hue  = Math.random() > 0.92 ? '255,255,255' : '0,255,179';
+        mCtx.fillStyle = `rgba(${hue},0.85)`;
+        mCtx.fillText(char, i * FONT_SZ, y * FONT_SZ);
+        if (y * FONT_SZ > mCanvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i] += 0.5;
+      });
+    }
+
+    resizeMatrix();
+    window.addEventListener('resize', resizeMatrix);
+    setInterval(drawMatrix, 55);
+
+    /* ═══════════════════════════════════════
+       CURSOR GLOW
+    ═══════════════════════════════════════ */
+    const cursorGlow = document.getElementById('cursor-glow');
+    let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+    let gcx = cx, gcy = cy;
+
+    document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
+
+    function animateCursor() {
+      gcx += (cx - gcx) * 0.08;
+      gcy += (cy - gcy) * 0.08;
+      cursorGlow.style.left = gcx + 'px';
+      cursorGlow.style.top  = gcy + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    /* ═══════════════════════════════════════
+       RIPPLE ON BUTTONS
+    ═══════════════════════════════════════ */
+    document.querySelectorAll('.ripple-container').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const rect   = btn.getBoundingClientRect();
+        const size   = Math.max(rect.width, rect.height);
+        const x      = e.clientX - rect.left - size / 2;
+        const y      = e.clientY - rect.top  - size / 2;
+        const wave   = document.createElement('span');
+        wave.className = 'ripple-wave';
+        wave.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
+        btn.appendChild(wave);
+        setTimeout(() => wave.remove(), 600);
+      });
+    });
+
+    /* ═══════════════════════════════════════
+       PROGRESS BAR
+    ═══════════════════════════════════════ */
+    const progressBar = document.getElementById('progress-bar');
+    function updateProgress() {
+      const scrollTop    = document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct          = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+
+    /* ═══════════════════════════════════════
+       THREAT MONITOR
+    ═══════════════════════════════════════ */
+    const threatText = document.getElementById('threat-level-text');
+    const threatBar  = document.getElementById('threat-bar');
+    const THREAT_STATES = [
+      { label: 'منخفض',  cls: 'low',  pct: 22,  bar: 'linear-gradient(90deg,#00ffb3,#38b2ff)' },
+      { label: 'متوسط', cls: 'med',  pct: 55,  bar: 'linear-gradient(90deg,#f59e0b,#ff8c00)' },
+      { label: 'مرتفع', cls: 'high', pct: 85,  bar: 'linear-gradient(90deg,#ff3864,#b066ff)' },
+      { label: 'منخفض',  cls: 'low',  pct: 18,  bar: 'linear-gradient(90deg,#00ffb3,#38b2ff)' },
+    ];
+    let tIdx = 0;
+    function cycleThreat() {
+      const s = THREAT_STATES[tIdx % THREAT_STATES.length];
+      threatText.textContent = s.label;
+      threatText.className   = 'monitor-value ' + s.cls;
+      threatBar.style.width  = s.pct + '%';
+      threatBar.style.background = s.bar;
+      tIdx++;
+    }
+    setInterval(cycleThreat, 4500);
+
+    /* ═══════════════════════════════════════
+       3D CARD TILT
+    ═══════════════════════════════════════ */
+    document.querySelectorAll('.card, .panel, .feature-item').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x    = (e.clientX - rect.left) / rect.width  - 0.5;
+        const y    = (e.clientY - rect.top)  / rect.height - 0.5;
+        card.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-5px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.transition = 'transform .4s var(--ease-out)';
+        setTimeout(() => { card.style.transition = ''; }, 400);
+      });
+    });
+
+    /* ═══════════════════════════════════════
+       TYPING EFFECT
+    ═══════════════════════════════════════ */
     const phrases = [
       'إلى قواعد كشف دقيقة',
       'إلى درع دفاعي فعّال',
       'إلى أنماط قابلة للتطبيق',
-      'إلى Sigma & Suricata Rules'
+      'إلى Sigma & Suricata Rules',
+      'إلى معرفة تصنع الفارق'
     ];
     let phraseIdx = 0, charIdx = 0, deleting = false;
     const typedEl = document.getElementById('typed-line');
@@ -429,27 +575,22 @@
       if (!deleting) {
         typedEl.textContent = phrase.slice(0, charIdx + 1);
         charIdx++;
-        if (charIdx === phrase.length) {
-          deleting = true;
-          setTimeout(typeLoop, PAUSE_MS);
-          return;
-        }
+        if (charIdx === phrase.length) { deleting = true; setTimeout(typeLoop, PAUSE_MS); return; }
       } else {
         typedEl.textContent = phrase.slice(0, charIdx - 1);
         charIdx--;
-        if (charIdx === 0) {
-          deleting = false;
-          phraseIdx = (phraseIdx + 1) % phrases.length;
-        }
+        if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; }
       }
       setTimeout(typeLoop, deleting ? DELETE_SPEED_MS : TYPE_SPEED_MS);
     }
     setTimeout(typeLoop, 1000);
 
-    /* ── Counter animation ── */
+    /* ═══════════════════════════════════════
+       COUNTER ANIMATION
+    ═══════════════════════════════════════ */
     function animateCounter(el) {
       const target = +el.dataset.target;
-      const duration = 1600;
+      const duration = 1800;
       const start = performance.now();
       function step(now) {
         const elapsed = now - start;
@@ -461,40 +602,40 @@
       requestAnimationFrame(step);
     }
 
-    /* ── Intersection Observer (reveal + counters) ── */
+    /* ═══════════════════════════════════════
+       INTERSECTION OBSERVER (reveal + counters)
+    ═══════════════════════════════════════ */
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('in-view');
-          const counters = entry.target.querySelectorAll('[data-target]');
-          counters.forEach(animateCounter);
+          entry.target.querySelectorAll('[data-target]').forEach(animateCounter);
           revealObserver.unobserve(entry.target);
         }
       });
     }, { threshold: REVEAL_THRESHOLD });
 
     document.querySelectorAll('.reveal, .reveal-child').forEach(el => revealObserver.observe(el));
-
-    /* Trigger hero metrics immediately */
     document.querySelectorAll('.hero-metrics [data-target]').forEach(animateCounter);
 
-    /* ── Mobile nav toggle ── */
+    /* ═══════════════════════════════════════
+       MOBILE NAV
+    ═══════════════════════════════════════ */
     const toggle = document.getElementById('nav-toggle');
-    const menu = document.getElementById('nav-menu');
+    const menu   = document.getElementById('nav-menu');
     if (toggle && menu) {
       toggle.addEventListener('click', () => {
         const open = menu.classList.toggle('open');
         toggle.setAttribute('aria-expanded', open);
       });
       menu.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          menu.classList.remove('open');
-          toggle.setAttribute('aria-expanded', 'false');
-        });
+        a.addEventListener('click', () => { menu.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); });
       });
     }
 
-    /* ── Active nav link on scroll ── */
+    /* ═══════════════════════════════════════
+       SCROLL SPY + NAVBAR
+    ═══════════════════════════════════════ */
     const sections = document.querySelectorAll('section[id], header[id]');
     const navLinks = document.querySelectorAll('.nav-links a');
     const scrollSpy = new IntersectionObserver((entries) => {
@@ -508,11 +649,9 @@
     }, { rootMargin: SCROLL_SPY_MARGIN });
     sections.forEach(s => scrollSpy.observe(s));
 
-    /* ── Navbar sticky style ── */
     const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-      navbar.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
+    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+
   })();
   </script>
 </body>
