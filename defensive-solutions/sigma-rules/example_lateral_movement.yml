@@ -1,0 +1,26 @@
+title: كشف نمط محاولات مصادقة فاشلة متعددة مع اتصالات قصيرة متعددة الوجهات
+id: 3f2a5e10-1b4c-4a9e-9c3d-example00001
+status: experimental
+description: >
+  نمط مستخرج من تحليل بيانات المحاكاة يشير إلى احتمال حركة جانبية:
+  عدد كبير من محاولات المصادقة الفاشلة مصحوبة باتصالات قصيرة جداً
+  نحو عدد كبير من الوجهات المختلفة في فترة زمنية قصيرة.
+references:
+  - attack-scenarios/lateral-movement/README.md
+author: "[اسم الباحث]"
+date: 2026/07/15
+tags:
+  - attack.lateral_movement
+  - attack.t1021
+logsource:
+  category: authentication
+  product: windows
+detection:
+  selection:
+    EventID: 4625          # فشل تسجيل الدخول
+  timeframe: 5m
+  condition: selection | count() by SourceIP > 15
+falsepositives:
+  - أنظمة اختبار الحمل الآلي
+  - أدوات مراقبة الشبكة المشروعة ذات معدل اتصال مرتفع
+level: high

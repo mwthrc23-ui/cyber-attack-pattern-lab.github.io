@@ -1,0 +1,18 @@
+# بيانات حساسة أو مؤقتة
+telemetry-data/network-logs/*.pcap
+telemetry-data/endpoint-logs/*.log
+telemetry-data/siem-exports/*.json
+!telemetry-data/**/README.md
+
+# بيئات بايثون
+__pycache__/
+*.pyc
+venv/
+.env
+
+# نوت بوك
+.ipynb_checkpoints/
+
+# ملفات النظام
+.DS_Store
+Thumbs.db
