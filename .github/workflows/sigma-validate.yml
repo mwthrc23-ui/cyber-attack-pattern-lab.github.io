@@ -20,8 +20,8 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install sigma-cli
-        run: pip install sigma-cli
+      - name: Install sigma-cli and SigmaHQ validators
+        run: pip install sigma-cli pysigma-validators-sigmahq
 
       - name: Validate Sigma rules syntax
         run: |

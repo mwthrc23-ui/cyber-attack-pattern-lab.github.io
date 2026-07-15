@@ -23,14 +23,17 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
-      - name: Install Ruff
-        run: pip install ruff
-
       - name: Run Ruff lint
-        run: ruff check pattern-extraction/
+        uses: astral-sh/ruff-action@v4.0.0
+        with:
+          args: "check"
+          src: "pattern-extraction/"
 
       - name: Run Ruff format check
-        run: ruff format --check pattern-extraction/
+        uses: astral-sh/ruff-action@v4.0.0
+        with:
+          args: "format --check --diff"
+          src: "pattern-extraction/"
 
   pip-audit:
     name: Dependency Security Audit
