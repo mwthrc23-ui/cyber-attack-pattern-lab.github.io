@@ -1,163 +1,109 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cyber Attack Pattern Lab | مستودع محاكاة الهجمات السيبرانية</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cyber Attack Pattern Lab: منصة بحثية دفاعية لمحاكاة الهجمات السيبرانية واستخراج أنماط وقائية قابلة للتطبيق.">
+  <title>Cyber Attack Pattern Lab | مختبر أنماط الهجمات السيبرانية</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header class="hero" id="top">
+    <nav class="navbar container">
+      <a class="brand" href="#top" aria-label="العودة إلى الأعلى">
+        <span class="brand-mark">🛡️</span>
+        <span>Cyber Attack Pattern Lab</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">نظرة عامة</a></li>
+        <li><a href="#pillars">المحاور</a></li>
+        <li><a href="#workflow">المنهجية</a></li>
+        <li><a href="#structure">الهيكل</a></li>
+        <li><a href="#ethics">الأخلاقيات</a></li>
+      </ul>
+      <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io" target="_blank" rel="noreferrer" class="btn btn-ghost">GitHub</a>
+    </nav>
 
-<header class="hero">
-  <nav class="navbar">
-    <div class="logo">🛡️ Cyber Attack Pattern Lab</div>
-    <ul class="nav-links">
-      <li><a href="#about">نظرة عامة</a></li>
-      <li><a href="#structure">الهيكل</a></li>
-      <li><a href="#methodology">المنهجية</a></li>
-      <li><a href="#tools">الأدوات</a></li>
-      <li><a href="#ethics">السياسة الأخلاقية</a></li>
-      <li><a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab-" target="_blank" class="github-btn">GitHub</a></li>
-    </ul>
-  </nav>
-
-  <div class="hero-content">
-    <h1>محاكاة الهجمات السيبرانية لاستخراج أنماط دفاعية جديدة</h1>
-    <p>مشروع بحثي مفتوح المصدر يحوّل بيانات المحاكاة الآمنة إلى قواعد كشف وحلول وقائية عملية</p>
-    <div class="hero-buttons">
-      <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab-" class="btn primary" target="_blank">استعرض المستودع</a>
-      <a href="#about" class="btn secondary">اعرف أكثر</a>
-    </div>
-  </div>
-</header>
-
-<section id="about" class="section">
-  <h2>نظرة عامة على المشروع</h2>
-  <p>
-    هذا المستودع مشروع بحثي دفاعي يهدف إلى محاكاة سلوكيات الهجمات السيبرانية
-    داخل بيئات معزولة تماماً عن الشبكات الحقيقية، بغرض جمع بيانات سلوكية دقيقة
-    وتحليلها باستخدام تقنيات التعلم الآلي وكشف الشواذ لاستخراج أنماط هجومية
-    جديدة، ثم ترجمة هذه الأنماط إلى قواعد وحلول وقائية عملية يمكن لفرق الأمن
-    السيبراني تطبيقها في بيئاتها الإنتاجية.
-  </p>
-  <div class="cards">
-    <div class="card">
-      <h3>🧪 محاكاة آمنة</h3>
-      <p>تنفيذ سيناريوهات هجومية معتمدة على MITRE ATT&CK داخل بيئات معزولة بالكامل.</p>
-    </div>
-    <div class="card">
-      <h3>📊 استخراج أنماط</h3>
-      <p>تحليل بيانات القياس باستخدام خوارزميات كشف الشواذ لاكتشاف سلوكيات غير موثقة.</p>
-    </div>
-    <div class="card">
-      <h3>🛡️ حلول وقائية</h3>
-      <p>ترجمة كل نمط مكتشف إلى قاعدة كشف عملية ودليل استجابة جاهز للتطبيق.</p>
-    </div>
-  </div>
-</section>
-
-<section id="structure" class="section alt">
-  <h2>هيكل المستودع</h2>
-  <div class="structure-grid">
-    <div class="structure-item">
-      <span class="folder-icon">📁</span>
-      <div>
-        <h4>lab-environments</h4>
-        <p>بيئات محاكاة معزولة باستخدام Docker وVagrant.</p>
+    <div class="hero-content container">
+      <p class="kicker">منصة بحثية دفاعية مفتوحة المصدر</p>
+      <h1>تحويل محاكاة الهجمات إلى قواعد كشف وحلول وقائية دقيقة</h1>
+      <p class="lead">المشروع يركز على محاكاة آمنة داخل بيئات معزولة، جمع بيانات سلوكية موثوقة، وتحليلها لاستخراج أنماط هجومية جديدة تخدم فرق الدفاع السيبراني.</p>
+      <div class="hero-actions">
+        <a href="#about" class="btn btn-primary">استكشف المشروع</a>
+        <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io" target="_blank" rel="noreferrer" class="btn btn-secondary">تصفح المستودع</a>
       </div>
+      <ul class="hero-metrics" aria-label="إحصاءات المشروع">
+        <li><strong>6+</strong><span>وحدات رئيسية</span></li>
+        <li><strong>MITRE</strong><span>مرجعية تقنية</span></li>
+        <li><strong>100%</strong><span>بيئات معزولة</span></li>
+      </ul>
     </div>
-    <div class="structure-item">
-      <span class="folder-icon">📁</span>
-      <div>
-        <h4>attack-scenarios</h4>
-        <p>توثيق سيناريوهات الهجوم مصنفة حسب MITRE ATT&CK.</p>
-      </div>
-    </div>
-    <div class="structure-item">
-      <span class="folder-icon">📁</span>
-      <div>
-        <h4>telemetry-data</h4>
-        <p>بيانات القياس الناتجة عن تشغيل السيناريوهات.</p>
-      </div>
-    </div>
-    <div class="structure-item">
-      <span class="folder-icon">📁</span>
-      <div>
-        <h4>pattern-extraction</h4>
-        <p>سكربتات ودفاتر تحليل لاستخراج الأنماط بالتعلم الآلي.</p>
-      </div>
-    </div>
-    <div class="structure-item">
-      <span class="folder-icon">📁</span>
-      <div>
-        <h4>defensive-solutions</h4>
-        <p>قواعد Sigma وSuricata وأدلة استجابة جاهزة للتطبيق.</p>
-      </div>
-    </div>
-    <div class="structure-item">
-      <span class="folder-icon">📁</span>
-      <div>
-        <h4>docs</h4>
-        <p>المنهجية العلمية الكاملة ودليل المساهمة.</p>
-      </div>
-    </div>
-  </div>
-</section>
+  </header>
 
-<section id="methodology" class="section">
-  <h2>المنهجية العلمية</h2>
-  <div class="timeline">
-    <div class="timeline-step">
-      <div class="step-number">1</div>
-      <div><h4>تحديد التقنية</h4><p>اختيار تقنية هجومية من إطار MITRE ATT&amp;CK.</p></div>
-    </div>
-    <div class="timeline-step">
-      <div class="step-number">2</div>
-      <div><h4>المحاكاة الآمنة</h4><p>تنفيذها داخل بيئة معزولة باستخدام Caldera أو Atomic Red Team.</p></div>
-    </div>
-    <div class="timeline-step">
-      <div class="step-number">3</div>
-      <div><h4>جمع بيانات القياس</h4><p>تسجيل السلوك باستخدام Zeek وWazuh.</p></div>
-    </div>
-    <div class="timeline-step">
-      <div class="step-number">4</div>
-      <div><h4>استخراج الأنماط</h4><p>تطبيق خوارزميات كشف الشواذ على البيانات المجمعة.</p></div>
-    </div>
-    <div class="timeline-step">
-      <div class="step-number">5</div>
-      <div><h4>صياغة الحل الوقائي</h4><p>تحويل النمط المؤكد إلى قاعدة كشف ودليل استجابة.</p></div>
-    </div>
-  </div>
-</section>
+  <main>
+    <section class="section container" id="about">
+      <h2>لماذا هذا المختبر؟</h2>
+      <p>
+        يوفر المختبر منهجية واضحة تبدأ من محاكاة تقنية هجومية معتمدة، ثم جمع القياسات وتحليلها بالتعلم الآلي،
+        وانتهاءً بإنتاج قواعد دفاعية عملية مثل Sigma وSuricata لتقليل زمن الاستجابة ورفع قدرة الكشف المبكر.
+      </p>
+    </section>
 
-<section id="tools" class="section alt">
-  <h2>الأدوات المستخدمة</h2>
-  <div class="tools-grid">
-    <span class="tool-badge">MITRE Caldera</span>
-    <span class="tool-badge">Atomic Red Team</span>
-    <span class="tool-badge">Wazuh</span>
-    <span class="tool-badge">Zeek</span>
-    <span class="tool-badge">Suricata</span>
-    <span class="tool-badge">scikit-learn</span>
-    <span class="tool-badge">PyOD</span>
-    <span class="tool-badge">Sigma Rules</span>
-  </div>
-</section>
+    <section class="section container" id="pillars">
+      <h2>المحاور الأساسية</h2>
+      <div class="grid cards-grid">
+        <article class="card">
+          <h3>🧪 محاكاة هجومية آمنة</h3>
+          <p>تشغيل السيناريوهات داخل بيئات اختبار منعزلة بالاعتماد على MITRE ATT&amp;CK وCaldera وAtomic Red Team.</p>
+        </article>
+        <article class="card">
+          <h3>📡 جمع وتحليل القياسات</h3>
+          <p>دمج سجلات الشبكة والطرفيات وSIEM لاستخراج مؤشرات سلوك ذات دقة أعلى باستخدام نماذج كشف الشذوذ.</p>
+        </article>
+        <article class="card">
+          <h3>🛡️ ترجمة النتائج لحماية فعلية</h3>
+          <p>تحويل كل نمط مؤكد إلى قاعدة كشف وإجراءات استجابة تساعد الفرق التشغيلية على التطبيق السريع.</p>
+        </article>
+      </div>
+    </section>
 
-<section id="ethics" class="section">
-  <h2>سياسة الاستخدام الأخلاقي</h2>
-  <div class="ethics-box">
-    <p>⚠️ جميع سيناريوهات المحاكاة تُنفَّذ فقط داخل بيئات معزولة تماماً. يُمنع
-    استخدام أي محتوى من هذا المستودع ضد أنظمة حقيقية دون إذن كتابي صريح.
-    الهدف النهائي من كل نمط يُكتشف هو تطوير حل وقائي، لا قدرة هجومية جديدة.</p>
-    <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab-/blob/main/ETHICS_POLICY.md" target="_blank" class="btn secondary small">قراءة السياسة الكاملة</a>
-  </div>
-</section>
+    <section class="section container" id="workflow">
+      <h2>سير العمل الدفاعي</h2>
+      <ol class="timeline">
+        <li><span>1</span><p>اختيار تقنية هجومية من إطار MITRE ATT&amp;CK.</p></li>
+        <li><span>2</span><p>تنفيذ المحاكاة داخل بيئة معزولة بالكامل.</p></li>
+        <li><span>3</span><p>جمع القياسات من الشبكة والطرفيات وأدوات SIEM.</p></li>
+        <li><span>4</span><p>تحليل البيانات لاستخراج السلوكيات غير الطبيعية.</p></li>
+        <li><span>5</span><p>إنتاج قاعدة كشف ودليل استجابة قابلين للتشغيل.</p></li>
+      </ol>
+    </section>
 
-<footer class="footer">
-  <p>Cyber Attack Pattern Lab — مشروع بحثي دفاعي مفتوح المصدر</p>
-  <p><a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab-" target="_blank">GitHub Repository</a></p>
-</footer>
+    <section class="section container" id="structure">
+      <h2>هيكل المستودع</h2>
+      <div class="grid structure-grid">
+        <article class="panel"><h3>lab-environments</h3><p>بنية المحاكاة المعزولة باستخدام Docker.</p></article>
+        <article class="panel"><h3>attack-scenarios</h3><p>سيناريوهات هجومية موثقة ومصنفة حسب التقنية.</p></article>
+        <article class="panel"><h3>telemetry-data</h3><p>البيانات السلوكية المجمعة من التجارب.</p></article>
+        <article class="panel"><h3>pattern-extraction</h3><p>أدوات تحليل واستخراج الأنماط بالتعلم الآلي.</p></article>
+        <article class="panel"><h3>defensive-solutions</h3><p>قواعد كشف وإجراءات وقائية جاهزة.</p></article>
+        <article class="panel"><h3>docs</h3><p>المنهجية والسياسات ودليل المساهمة.</p></article>
+      </div>
+    </section>
 
+    <section class="section container" id="ethics">
+      <h2>سياسة الاستخدام الأخلاقي</h2>
+      <div class="alert-box">
+        <p>
+          ⚠️ هذا المحتوى مخصص للأغراض الدفاعية فقط. يمنع تشغيل السيناريوهات خارج البيئات المعزولة أو ضد أنظمة حقيقية دون تصريح رسمي.
+        </p>
+        <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io/blob/main/ETHICS_POLICY.md" target="_blank" rel="noreferrer" class="btn btn-secondary">قراءة السياسة كاملة</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Cyber Attack Pattern Lab © 2026</p>
+    <p><a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io" target="_blank" rel="noreferrer">زيارة المستودع على GitHub</a></p>
+  </footer>
 </body>
 </html>
