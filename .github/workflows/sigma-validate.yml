@@ -25,7 +25,7 @@ jobs:
 
       - name: Validate Sigma rules syntax
         run: |
-          find defensive-solutions/sigma-rules -name "*.yml" | while read rule; do
+          find defensive-solutions/sigma-rules -name "*.yml" | while IFS= read -r rule; do
             echo "Checking: $rule"
             sigma check "$rule" || exit 1
           done
