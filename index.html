@@ -7,57 +7,28 @@
   <title>Cyber Attack Pattern Lab | مختبر أنماط الهجمات السيبرانية</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ===== Progress bar ===== -->
-  <div id="progress-bar" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="grid-floor" aria-hidden="true"></div>
+  <div id="scroll-progress" aria-hidden="true"></div>
 
-  <!-- ===== Hex grid ===== -->
-  <div class="hex-grid" aria-hidden="true"></div>
-
-  <!-- ===== Matrix rain canvas ===== -->
-  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
-
-  <!-- ===== Particle canvas ===== -->
-  <canvas id="particle-canvas" aria-hidden="true"></canvas>
-
-  <!-- ===== Cursor glow ===== -->
-  <div id="cursor-glow" aria-hidden="true"></div>
-
-  <!-- ===== Scan line overlay ===== -->
-  <div class="scan-line" aria-hidden="true"></div>
-
-  <!-- ===== Threat monitor ===== -->
-  <aside id="threat-monitor" aria-label="نظام المراقبة">
-    <div class="monitor-header">
-      <span class="monitor-dot"></span>
-      <span>نظام المراقبة</span>
-    </div>
-    <div>
-      <div class="monitor-label">مستوى التهديد</div>
-      <div class="monitor-value low" id="threat-level-text">منخفض</div>
-    </div>
-    <div class="monitor-bar-track">
-      <div class="monitor-bar-fill" id="threat-bar" style="width:22%"></div>
-    </div>
-    <div>
-      <div class="monitor-label">الحالة</div>
-      <div class="monitor-value" style="color:var(--green-neon);font-size:.78rem;">محاكاة آمنة ✓</div>
-    </div>
-  </aside>
-
-  <!-- ===== NAV ===== -->
+  <!-- NAV -->
   <header id="top">
     <nav class="navbar" role="navigation" aria-label="القائمة الرئيسية">
       <div class="container nav-inner">
-        <a class="brand" href="#top" aria-label="العودة إلى الأعلى">
-          <span class="brand-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <a class="brand" href="#top">
+          <span class="brand-radar" aria-hidden="true">
+            <span class="brand-sweep"></span>
+            <span class="brand-core"></span>
           </span>
-          <span class="brand-text">CAPL</span>
+          <span class="brand-text">
+            <span class="brand-name">CAPL</span>
+            <span class="brand-sub">Signal Lab</span>
+          </span>
         </a>
 
         <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="فتح القائمة">
@@ -74,261 +45,323 @@
 
         <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io"
            target="_blank" rel="noreferrer" class="btn btn-ghost nav-github">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span>GitHub</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          المستودع
         </a>
       </div>
     </nav>
   </header>
 
-  <!-- ===== HERO ===== -->
+  <!-- HERO -->
   <section class="hero" aria-labelledby="hero-title">
-    <div class="hero-glow hero-glow--blue" aria-hidden="true"></div>
-    <div class="hero-glow hero-glow--green" aria-hidden="true"></div>
-    <div class="hero-glow hero-glow--purple" aria-hidden="true"></div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="status-chip">
+          <span class="status-pulse" aria-hidden="true"></span>
+          <span>محاكاة آمنة · بيئات معزولة</span>
+          <span class="status-code">DEF-LAB-01</span>
+        </div>
 
-    <div class="container hero-content">
-      <div class="kicker-wrap">
-        <span class="kicker-dot" aria-hidden="true"></span>
-        <span class="kicker">منصة بحثية دفاعية مفتوحة المصدر</span>
+        <h1 id="hero-title">
+          <span class="title-eyebrow">مختبر أنماط الهجمات</span>
+          <span class="title-main">نلتقط الإشارة.</span>
+          <span class="title-accent">نحوّلها إلى درع.</span>
+        </h1>
+
+        <p class="lead">
+          منصة بحثية دفاعية تحوّل محاكاة الهجمات داخل بيئات معزولة إلى قواعد كشف
+          وأنماط وقائية تخدم فرق الـ Blue Team — بدون أدوات استغلال جاهزة.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#about" class="btn btn-primary">
+            <span>ادخل المختبر</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+          <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io"
+             target="_blank" rel="noreferrer" class="btn btn-outline">تصفح على GitHub</a>
+        </div>
+
+        <div class="hero-stats" aria-label="مؤشرات المشروع">
+          <div class="stat">
+            <span class="stat-value" data-target="6">0</span>
+            <span class="stat-unit">+</span>
+            <span class="stat-label">وحدات</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat-value stat-text">MITRE</span>
+            <span class="stat-label">مرجعية</span>
+          </div>
+          <div class="stat-divider" aria-hidden="true"></div>
+          <div class="stat">
+            <span class="stat-value" data-target="100">0</span>
+            <span class="stat-unit">%</span>
+            <span class="stat-label">عزل</span>
+          </div>
+        </div>
       </div>
 
-      <h1 id="hero-title">
-        <span class="title-line glitch-wrap" data-text="تحويل محاكاة الهجمات">تحويل محاكاة الهجمات</span>
-        <span class="title-line title-line--accent" id="typed-line" aria-live="polite">إلى قواعد كشف دقيقة</span>
-      </h1>
+      <!-- Signature: Radar scope -->
+      <div class="radar-stage" aria-hidden="true">
+        <div class="radar-frame">
+          <div class="radar-bezel">
+            <div class="radar-screen">
+              <div class="radar-rings">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="radar-cross"></div>
+              <div class="radar-sweep"></div>
+              <div class="radar-blip blip-1" data-label="T1059"></div>
+              <div class="radar-blip blip-2" data-label="T1021"></div>
+              <div class="radar-blip blip-3" data-label="T1048"></div>
+              <div class="radar-blip blip-4" data-label="T1068"></div>
+              <div class="radar-center"></div>
+              <div class="radar-readout">
+                <span class="readout-label">PATTERN SCAN</span>
+                <span class="readout-value" id="scan-status">ACTIVE</span>
+              </div>
+            </div>
+          </div>
+          <div class="radar-meta">
+            <span>SECTOR // DEFENSE</span>
+            <span class="radar-freq">FREQ 4.2 GHz</span>
+          </div>
+        </div>
 
-      <p class="lead">
-        محاكاة آمنة داخل بيئات معزولة · بيانات سلوكية موثوقة · أنماط هجومية تخدم فرق الدفاع السيبراني
-      </p>
-
-      <div class="hero-actions">
-        <a href="#about" class="btn btn-primary ripple-container">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          استكشف المشروع
-        </a>
-        <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io"
-           target="_blank" rel="noreferrer" class="btn btn-outline ripple-container">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          تصفح المستودع
-        </a>
+        <div class="orbit-card orbit-a">
+          <span class="orbit-icon">Σ</span>
+          <span>Sigma Rules</span>
+        </div>
+        <div class="orbit-card orbit-b">
+          <span class="orbit-icon">⚡</span>
+          <span>Suricata</span>
+        </div>
+        <div class="orbit-card orbit-c">
+          <span class="orbit-icon">◎</span>
+          <span>ATT&amp;CK</span>
+        </div>
       </div>
-
-      <ul class="hero-metrics" aria-label="إحصاءات المشروع" role="list">
-        <li class="metric-card">
-          <span class="metric-value" data-target="6">0</span>
-          <span class="metric-plus">+</span>
-          <span class="metric-label">وحدات رئيسية</span>
-        </li>
-        <li class="metric-card">
-          <span class="metric-value metric-text">MITRE</span>
-          <span class="metric-label">مرجعية تقنية</span>
-        </li>
-        <li class="metric-card">
-          <span class="metric-value" data-target="100">0</span>
-          <span class="metric-plus">%</span>
-          <span class="metric-label">بيئات معزولة</span>
-        </li>
-      </ul>
     </div>
 
-    <div class="hero-scroll-indicator" aria-hidden="true">
-      <span></span>
+    <div class="hero-wave" aria-hidden="true">
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <path class="wave-path" d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z"/>
+      </svg>
     </div>
   </section>
 
-  <!-- ===== MAIN CONTENT ===== -->
   <main>
 
-    <!-- About -->
-    <section class="section reveal" id="about" aria-labelledby="about-title">
-      <div class="container section-inner">
-        <div class="section-badge">نظرة عامة</div>
-        <h2 id="about-title">لماذا هذا المختبر؟</h2>
-        <p class="section-desc">
-          يوفر المختبر منهجية واضحة تبدأ من محاكاة تقنية هجومية معتمدة، ثم جمع القياسات وتحليلها بالتعلم الآلي،
-          وانتهاءً بإنتاج قواعد دفاعية عملية مثل Sigma وSuricata لتقليل زمن الاستجابة ورفع قدرة الكشف المبكر.
-        </p>
+    <!-- ABOUT -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-index">01</span>
+          <div>
+            <p class="section-kicker">لماذا المختبر؟</p>
+            <h2 id="about-title">من المحاكاة إلى القاعدة الدفاعية</h2>
+          </div>
+        </div>
 
-        <div class="about-features">
-          <div class="feature-item reveal-child">
-            <div class="feature-icon" aria-hidden="true">⚡</div>
-            <div>
+        <div class="about-layout">
+          <p class="about-lead">
+            منهجية واضحة: محاكاة تقنية هجومية معتمدة، جمع قياسات سلوكية، تحليل بالتعلم الآلي،
+            ثم إنتاج قواعد Sigma و Suricata تقلّص زمن الاستجابة وترفع قدرة الكشف المبكر.
+          </p>
+
+          <div class="signal-cards">
+            <article class="signal-card">
+              <div class="signal-bars" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i>
+              </div>
               <h3>سرعة الاستجابة</h3>
-              <p>تقليص الوقت بين الكشف عن نمط هجومي وإنتاج قاعدة كشف جاهزة للتشغيل.</p>
-            </div>
-          </div>
-          <div class="feature-item reveal-child">
-            <div class="feature-icon" aria-hidden="true">🔬</div>
-            <div>
-              <h3>دقة علمية</h3>
-              <p>كل نتيجة مدعومة بأدلة تجريبية من بيئات معزولة يمكن إعادة إنتاجها.</p>
-            </div>
-          </div>
-          <div class="feature-item reveal-child">
-            <div class="feature-icon" aria-hidden="true">🌐</div>
-            <div>
+              <p>من اكتشاف النمط إلى قاعدة كشف جاهزة للتشغيل — مسار مختصر ومدروس.</p>
+            </article>
+            <article class="signal-card">
+              <div class="signal-bars" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <h3>دقة تجريبية</h3>
+              <p>كل نتيجة مدعومة بأدلة من بيئات معزولة يمكن إعادة إنتاجها.</p>
+            </article>
+            <article class="signal-card">
+              <div class="signal-bars" aria-hidden="true">
+                <i></i><i></i><i></i><i></i><i></i>
+              </div>
               <h3>مجتمع مفتوح</h3>
-              <p>مستودع مفتوح المصدر يرحب بمساهمات الباحثين والممارسين حول العالم.</p>
-            </div>
+              <p>مستودع مفتوح يرحب بمساهمات الباحثين والممارسين حول العالم.</p>
+            </article>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Pillars -->
-    <section class="section section--alt reveal" id="pillars" aria-labelledby="pillars-title">
-      <div class="container section-inner">
-        <div class="section-badge">المحاور</div>
-        <h2 id="pillars-title">المحاور الأساسية</h2>
-        <p class="section-desc">ثلاثة محاور متكاملة تشكّل العمود الفقري لمنهجية المختبر.</p>
-        <div class="cards-grid">
-          <article class="card reveal-child" tabindex="0">
-            <div class="card-glow" aria-hidden="true"></div>
-            <div class="card-icon" aria-hidden="true">🧪</div>
-            <h3>محاكاة هجومية آمنة</h3>
-            <p>تشغيل السيناريوهات داخل بيئات اختبار منعزلة بالاعتماد على MITRE ATT&amp;CK وCaldera وAtomic Red Team.</p>
-            <div class="card-tag">Red Team</div>
-          </article>
-          <article class="card reveal-child" tabindex="0">
-            <div class="card-glow" aria-hidden="true"></div>
-            <div class="card-icon" aria-hidden="true">📡</div>
-            <h3>جمع وتحليل القياسات</h3>
-            <p>دمج سجلات الشبكة والطرفيات وSIEM لاستخراج مؤشرات سلوك ذات دقة أعلى باستخدام نماذج كشف الشذوذ.</p>
-            <div class="card-tag">Telemetry</div>
-          </article>
-          <article class="card reveal-child" tabindex="0">
-            <div class="card-glow" aria-hidden="true"></div>
-            <div class="card-icon" aria-hidden="true">🛡️</div>
-            <h3>ترجمة النتائج لحماية فعلية</h3>
-            <p>تحويل كل نمط مؤكد إلى قاعدة كشف وإجراءات استجابة تساعد الفرق التشغيلية على التطبيق السريع.</p>
-            <div class="card-tag">Blue Team</div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Workflow -->
-    <section class="section reveal" id="workflow" aria-labelledby="workflow-title">
-      <div class="container section-inner">
-        <div class="section-badge">المنهجية</div>
-        <h2 id="workflow-title">سير العمل الدفاعي</h2>
-        <p class="section-desc">خمس خطوات متتابعة تحوّل التهديد إلى درع وقائي.</p>
-        <ol class="timeline" role="list">
-          <li class="timeline-item reveal-child">
-            <div class="timeline-step" aria-label="الخطوة 1">1</div>
-            <div class="timeline-connector" aria-hidden="true"></div>
-            <div class="timeline-body">
-              <h3>اختيار التقنية</h3>
-              <p>اختيار تقنية هجومية من إطار MITRE ATT&amp;CK.</p>
-            </div>
-          </li>
-          <li class="timeline-item reveal-child">
-            <div class="timeline-step" aria-label="الخطوة 2">2</div>
-            <div class="timeline-connector" aria-hidden="true"></div>
-            <div class="timeline-body">
-              <h3>تنفيذ المحاكاة</h3>
-              <p>تنفيذ المحاكاة داخل بيئة معزولة بالكامل.</p>
-            </div>
-          </li>
-          <li class="timeline-item reveal-child">
-            <div class="timeline-step" aria-label="الخطوة 3">3</div>
-            <div class="timeline-connector" aria-hidden="true"></div>
-            <div class="timeline-body">
-              <h3>جمع القياسات</h3>
-              <p>جمع القياسات من الشبكة والطرفيات وأدوات SIEM.</p>
-            </div>
-          </li>
-          <li class="timeline-item reveal-child">
-            <div class="timeline-step" aria-label="الخطوة 4">4</div>
-            <div class="timeline-connector" aria-hidden="true"></div>
-            <div class="timeline-body">
-              <h3>تحليل البيانات</h3>
-              <p>تحليل البيانات لاستخراج السلوكيات غير الطبيعية.</p>
-            </div>
-          </li>
-          <li class="timeline-item reveal-child">
-            <div class="timeline-step" aria-label="الخطوة 5">5</div>
-            <div class="timeline-body">
-              <h3>إنتاج قاعدة الكشف</h3>
-              <p>إنتاج قاعدة كشف ودليل استجابة قابلين للتشغيل.</p>
-            </div>
-          </li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- Structure -->
-    <section class="section section--alt reveal" id="structure" aria-labelledby="structure-title">
-      <div class="container section-inner">
-        <div class="section-badge">الهيكل</div>
-        <h2 id="structure-title">هيكل المستودع</h2>
-        <p class="section-desc">ستة مجلدات تُشكّل بنية منطقية واضحة للمشروع.</p>
-        <div class="structure-grid">
-          <article class="panel reveal-child" tabindex="0">
-            <div class="panel-header">
-              <span class="panel-icon" aria-hidden="true">🖥️</span>
-              <code>lab-environments</code>
-            </div>
-            <p>بنية المحاكاة المعزولة باستخدام Docker.</p>
-          </article>
-          <article class="panel reveal-child" tabindex="0">
-            <div class="panel-header">
-              <span class="panel-icon" aria-hidden="true">⚔️</span>
-              <code>attack-scenarios</code>
-            </div>
-            <p>سيناريوهات هجومية موثقة ومصنفة حسب التقنية.</p>
-          </article>
-          <article class="panel reveal-child" tabindex="0">
-            <div class="panel-header">
-              <span class="panel-icon" aria-hidden="true">📊</span>
-              <code>telemetry-data</code>
-            </div>
-            <p>البيانات السلوكية المجمعة من التجارب.</p>
-          </article>
-          <article class="panel reveal-child" tabindex="0">
-            <div class="panel-header">
-              <span class="panel-icon" aria-hidden="true">🤖</span>
-              <code>pattern-extraction</code>
-            </div>
-            <p>أدوات تحليل واستخراج الأنماط بالتعلم الآلي.</p>
-          </article>
-          <article class="panel reveal-child" tabindex="0">
-            <div class="panel-header">
-              <span class="panel-icon" aria-hidden="true">🛡️</span>
-              <code>defensive-solutions</code>
-            </div>
-            <p>قواعد كشف وإجراءات وقائية جاهزة.</p>
-          </article>
-          <article class="panel reveal-child" tabindex="0">
-            <div class="panel-header">
-              <span class="panel-icon" aria-hidden="true">📚</span>
-              <code>docs</code>
-            </div>
-            <p>المنهجية والسياسات ودليل المساهمة.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- Ethics -->
-    <section class="section reveal" id="ethics" aria-labelledby="ethics-title">
-      <div class="container section-inner">
-        <div class="section-badge">الأخلاقيات</div>
-        <h2 id="ethics-title">سياسة الاستخدام الأخلاقي</h2>
-        <div class="alert-box">
-          <div class="alert-icon" aria-hidden="true">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+    <!-- PILLARS -->
+    <section class="section section-dim" id="pillars" aria-labelledby="pillars-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-index">02</span>
+          <div>
+            <p class="section-kicker">المحاور</p>
+            <h2 id="pillars-title">ثلاث دوائر دفاع متكاملة</h2>
           </div>
-          <div class="alert-content">
-            <h3>تحذير مهم</h3>
+        </div>
+
+        <div class="pillars-rail">
+          <article class="pillar">
+            <div class="pillar-num">A</div>
+            <div class="pillar-body">
+              <span class="pillar-tag">Red Team</span>
+              <h3>محاكاة هجومية آمنة</h3>
+              <p>تشغيل السيناريوهات داخل بيئات اختبار منعزلة بالاعتماد على MITRE ATT&amp;CK و Caldera و Atomic Red Team.</p>
+            </div>
+            <div class="pillar-glow" aria-hidden="true"></div>
+          </article>
+          <article class="pillar">
+            <div class="pillar-num">B</div>
+            <div class="pillar-body">
+              <span class="pillar-tag">Telemetry</span>
+              <h3>جمع وتحليل القياسات</h3>
+              <p>دمج سجلات الشبكة والطرفيات و SIEM لاستخراج مؤشرات سلوك بدقة أعلى عبر كشف الشذوذ.</p>
+            </div>
+            <div class="pillar-glow" aria-hidden="true"></div>
+          </article>
+          <article class="pillar">
+            <div class="pillar-num">C</div>
+            <div class="pillar-body">
+              <span class="pillar-tag">Blue Team</span>
+              <h3>ترجمة النتائج لحماية فعلية</h3>
+              <p>تحويل كل نمط مؤكد إلى قاعدة كشف وإجراءات استجابة جاهزة للفرق التشغيلية.</p>
+            </div>
+            <div class="pillar-glow" aria-hidden="true"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKFLOW -->
+    <section class="section" id="workflow" aria-labelledby="workflow-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-index">03</span>
+          <div>
+            <p class="section-kicker">المنهجية</p>
+            <h2 id="workflow-title">خط أنابيب الإشارة الدفاعية</h2>
+          </div>
+        </div>
+
+        <div class="pipeline" role="list">
+          <div class="pipe-step" role="listitem">
+            <div class="pipe-node"><span>01</span></div>
+            <h3>اختيار التقنية</h3>
+            <p>تقنية هجومية من إطار MITRE ATT&amp;CK</p>
+          </div>
+          <div class="pipe-link" aria-hidden="true"></div>
+          <div class="pipe-step" role="listitem">
+            <div class="pipe-node"><span>02</span></div>
+            <h3>تنفيذ المحاكاة</h3>
+            <p>داخل بيئة معزولة بالكامل</p>
+          </div>
+          <div class="pipe-link" aria-hidden="true"></div>
+          <div class="pipe-step" role="listitem">
+            <div class="pipe-node"><span>03</span></div>
+            <h3>جمع القياسات</h3>
+            <p>شبكة · طرفيات · SIEM</p>
+          </div>
+          <div class="pipe-link" aria-hidden="true"></div>
+          <div class="pipe-step" role="listitem">
+            <div class="pipe-node"><span>04</span></div>
+            <h3>تحليل البيانات</h3>
+            <p>استخراج السلوكيات غير الطبيعية</p>
+          </div>
+          <div class="pipe-link" aria-hidden="true"></div>
+          <div class="pipe-step" role="listitem">
+            <div class="pipe-node pipe-node--end"><span>05</span></div>
+            <h3>قاعدة الكشف</h3>
+            <p>Sigma / Suricata + دليل استجابة</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRUCTURE -->
+    <section class="section section-dim" id="structure" aria-labelledby="structure-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-index">04</span>
+          <div>
+            <p class="section-kicker">الهيكل</p>
+            <h2 id="structure-title">خريطة المستودع</h2>
+          </div>
+        </div>
+
+        <div class="bento">
+          <article class="bento-item bento-wide">
+            <code>lab-environments</code>
+            <h3>بيئات المحاكاة</h3>
+            <p>بنية Docker معزولة لتشغيل السيناريوهات بأمان.</p>
+            <span class="bento-mark">01</span>
+          </article>
+          <article class="bento-item">
+            <code>attack-scenarios</code>
+            <h3>سيناريوهات</h3>
+            <p>موثّقة ومصنّفة حسب التقنية.</p>
+            <span class="bento-mark">02</span>
+          </article>
+          <article class="bento-item">
+            <code>telemetry-data</code>
+            <h3>القياسات</h3>
+            <p>بيانات سلوكية من التجارب.</p>
+            <span class="bento-mark">03</span>
+          </article>
+          <article class="bento-item">
+            <code>pattern-extraction</code>
+            <h3>استخراج الأنماط</h3>
+            <p>تحليل وتعلّم آلي.</p>
+            <span class="bento-mark">04</span>
+          </article>
+          <article class="bento-item">
+            <code>defensive-solutions</code>
+            <h3>حلول دفاعية</h3>
+            <p>قواعد كشف وإجراءات.</p>
+            <span class="bento-mark">05</span>
+          </article>
+          <article class="bento-item bento-wide">
+            <code>docs</code>
+            <h3>التوثيق والسياسات</h3>
+            <p>المنهجية، الأخلاقيات، ودليل المساهمة.</p>
+            <span class="bento-mark">06</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ETHICS -->
+    <section class="section" id="ethics" aria-labelledby="ethics-title">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-index">05</span>
+          <div>
+            <p class="section-kicker">الأخلاقيات</p>
+            <h2 id="ethics-title">حدود الاستخدام</h2>
+          </div>
+        </div>
+
+        <div class="ethics-panel">
+          <div class="ethics-stripe" aria-hidden="true"></div>
+          <div class="ethics-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+          </div>
+          <div class="ethics-body">
+            <h3>تحذير تشغيلي</h3>
             <p>
-              هذا المحتوى مخصص للأغراض الدفاعية فقط. يمنع تشغيل السيناريوهات خارج البيئات المعزولة
+              هذا المحتوى مخصص للأغراض الدفاعية فقط. يُمنع تشغيل السيناريوهات خارج البيئات المعزولة
               أو ضد أنظمة حقيقية دون تصريح رسمي كتابي.
             </p>
             <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io/blob/main/ETHICS_POLICY.md"
                target="_blank" rel="noreferrer" class="btn btn-warn">
-              قراءة السياسة كاملة
+              قراءة سياسة الأخلاقيات
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>
           </div>
@@ -338,20 +371,21 @@
 
   </main>
 
-  <!-- ===== FOOTER ===== -->
   <footer class="footer">
-    <div class="container footer-inner">
+    <div class="container footer-grid">
       <div class="footer-brand">
-        <span class="brand-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span class="brand-radar brand-radar--sm" aria-hidden="true">
+          <span class="brand-sweep"></span>
+          <span class="brand-core"></span>
         </span>
-        <span>Cyber Attack Pattern Lab</span>
+        <div>
+          <strong>Cyber Attack Pattern Lab</strong>
+          <span>© 2026 · دفاعي · بحثي · مفتوح المصدر</span>
+        </div>
       </div>
-      <p class="footer-copy">© 2026 — بنيّ للأغراض الدفاعية والبحثية فقط</p>
       <a href="https://github.com/mwthrc23-ui/cyber-attack-pattern-lab.github.io"
          target="_blank" rel="noreferrer" class="footer-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-        GitHub Repository
+        GitHub Repository →
       </a>
     </div>
   </footer>
@@ -360,298 +394,100 @@
   (() => {
     'use strict';
 
-    /* ── Constants ── */
-    const PARTICLE_COUNT  = window.innerWidth < 600 ? 35 : 80;
-    const PARTICLE_MAX_DIST = 140;
-    const TYPE_SPEED_MS   = 80;
-    const DELETE_SPEED_MS = 45;
-    const PAUSE_MS        = 2200;
-    const SCROLL_SPY_MARGIN = '-40% 0px -55% 0px';
-    const REVEAL_THRESHOLD  = 0.12;
+    /* Scroll progress */
+    const bar = document.getElementById('scroll-progress');
+    const onScroll = () => {
+      const top = document.documentElement.scrollTop;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (bar) bar.style.transform = `scaleX(${max > 0 ? top / max : 0})`;
+      document.querySelector('.navbar')?.classList.toggle('scrolled', window.scrollY > 24);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 
-    /* ═══════════════════════════════════════
-       PARTICLE CANVAS
-    ═══════════════════════════════════════ */
-    const canvas = document.getElementById('particle-canvas');
-    const ctx    = canvas.getContext('2d');
-    let particles = [];
-    const COLORS = ['56,178,255', '0,255,179', '176,102,255', '255,56,100'];
-
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-
-    function randomBetween(a, b) { return a + Math.random() * (b - a); }
-
-    function createParticle() {
-      return {
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: randomBetween(-0.3, 0.3),
-        vy: randomBetween(-0.3, 0.3),
-        r: randomBetween(1, 2.8),
-        alpha: randomBetween(0.2, 0.65),
-        color: COLORS[Math.floor(Math.random() * COLORS.length)]
-      };
-    }
-
-    function initParticles() { particles = Array.from({ length: PARTICLE_COUNT }, createParticle); }
-
-    function drawParticle(p) {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
-      ctx.fill();
-    }
-
-    function drawConnections() {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < PARTICLE_MAX_DIST) {
-            const opacity = (1 - dist / PARTICLE_MAX_DIST) * 0.22;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(56,178,255,${opacity})`;
-            ctx.lineWidth = 0.7;
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width)  p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-        drawParticle(p);
-      });
-      drawConnections();
-      requestAnimationFrame(animateParticles);
-    }
-
-    window.addEventListener('resize', resize);
-    resize(); initParticles(); animateParticles();
-
-    /* ═══════════════════════════════════════
-       MATRIX RAIN
-    ═══════════════════════════════════════ */
-    const mCanvas = document.getElementById('matrix-canvas');
-    const mCtx    = mCanvas.getContext('2d');
-    const CHARS   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&!?<>{}[]01';
-    const FONT_SZ = 13;
-    let drops = [];
-
-    function resizeMatrix() {
-      mCanvas.width  = window.innerWidth;
-      mCanvas.height = window.innerHeight;
-      const cols = Math.floor(mCanvas.width / FONT_SZ);
-      drops = Array.from({ length: cols }, () => Math.random() * -50);
-    }
-
-    function drawMatrix() {
-      mCtx.fillStyle = 'rgba(3,5,13,.06)';
-      mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
-      mCtx.font = FONT_SZ + 'px monospace';
-      drops.forEach((y, i) => {
-        const char = CHARS[Math.floor(Math.random() * CHARS.length)];
-        const hue  = Math.random() > 0.92 ? '255,255,255' : '0,255,179';
-        mCtx.fillStyle = `rgba(${hue},0.85)`;
-        mCtx.fillText(char, i * FONT_SZ, y * FONT_SZ);
-        if (y * FONT_SZ > mCanvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i] += 0.5;
-      });
-    }
-
-    resizeMatrix();
-    window.addEventListener('resize', resizeMatrix);
-    setInterval(drawMatrix, 55);
-
-    /* ═══════════════════════════════════════
-       CURSOR GLOW
-    ═══════════════════════════════════════ */
-    const cursorGlow = document.getElementById('cursor-glow');
-    let cx = window.innerWidth / 2, cy = window.innerHeight / 2;
-    let gcx = cx, gcy = cy;
-
-    document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
-
-    function animateCursor() {
-      gcx += (cx - gcx) * 0.08;
-      gcy += (cy - gcy) * 0.08;
-      cursorGlow.style.left = gcx + 'px';
-      cursorGlow.style.top  = gcy + 'px';
-      requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-
-    /* ═══════════════════════════════════════
-       RIPPLE ON BUTTONS
-    ═══════════════════════════════════════ */
-    document.querySelectorAll('.ripple-container').forEach(btn => {
-      btn.addEventListener('click', e => {
-        const rect   = btn.getBoundingClientRect();
-        const size   = Math.max(rect.width, rect.height);
-        const x      = e.clientX - rect.left - size / 2;
-        const y      = e.clientY - rect.top  - size / 2;
-        const wave   = document.createElement('span');
-        wave.className = 'ripple-wave';
-        wave.style.cssText = `width:${size}px;height:${size}px;left:${x}px;top:${y}px`;
-        btn.appendChild(wave);
-        setTimeout(() => wave.remove(), 600);
-      });
-    });
-
-    /* ═══════════════════════════════════════
-       PROGRESS BAR
-    ═══════════════════════════════════════ */
-    const progressBar = document.getElementById('progress-bar');
-    function updateProgress() {
-      const scrollTop    = document.documentElement.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const pct          = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-      progressBar.style.width = pct + '%';
-    }
-    window.addEventListener('scroll', updateProgress, { passive: true });
-
-    /* ═══════════════════════════════════════
-       THREAT MONITOR
-    ═══════════════════════════════════════ */
-    const threatText = document.getElementById('threat-level-text');
-    const threatBar  = document.getElementById('threat-bar');
-    const THREAT_STATES = [
-      { label: 'منخفض',  cls: 'low',  pct: 22,  bar: 'linear-gradient(90deg,#00ffb3,#38b2ff)' },
-      { label: 'متوسط', cls: 'med',  pct: 55,  bar: 'linear-gradient(90deg,#f59e0b,#ff8c00)' },
-      { label: 'مرتفع', cls: 'high', pct: 85,  bar: 'linear-gradient(90deg,#ff3864,#b066ff)' },
-      { label: 'منخفض',  cls: 'low',  pct: 18,  bar: 'linear-gradient(90deg,#00ffb3,#38b2ff)' },
-    ];
-    let tIdx = 0;
-    function cycleThreat() {
-      const s = THREAT_STATES[tIdx % THREAT_STATES.length];
-      threatText.textContent = s.label;
-      threatText.className   = 'monitor-value ' + s.cls;
-      threatBar.style.width  = s.pct + '%';
-      threatBar.style.background = s.bar;
-      tIdx++;
-    }
-    setInterval(cycleThreat, 4500);
-
-    /* ═══════════════════════════════════════
-       3D CARD TILT
-    ═══════════════════════════════════════ */
-    document.querySelectorAll('.card, .panel, .feature-item').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x    = (e.clientX - rect.left) / rect.width  - 0.5;
-        const y    = (e.clientY - rect.top)  / rect.height - 0.5;
-        card.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-5px)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        card.style.transition = 'transform .4s var(--ease-out)';
-        setTimeout(() => { card.style.transition = ''; }, 400);
-      });
-    });
-
-    /* ═══════════════════════════════════════
-       TYPING EFFECT
-    ═══════════════════════════════════════ */
-    const phrases = [
-      'إلى قواعد كشف دقيقة',
-      'إلى درع دفاعي فعّال',
-      'إلى أنماط قابلة للتطبيق',
-      'إلى Sigma & Suricata Rules',
-      'إلى معرفة تصنع الفارق'
-    ];
-    let phraseIdx = 0, charIdx = 0, deleting = false;
-    const typedEl = document.getElementById('typed-line');
-
-    function typeLoop() {
-      if (!typedEl) return;
-      const phrase = phrases[phraseIdx];
-      if (!deleting) {
-        typedEl.textContent = phrase.slice(0, charIdx + 1);
-        charIdx++;
-        if (charIdx === phrase.length) { deleting = true; setTimeout(typeLoop, PAUSE_MS); return; }
-      } else {
-        typedEl.textContent = phrase.slice(0, charIdx - 1);
-        charIdx--;
-        if (charIdx === 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; }
-      }
-      setTimeout(typeLoop, deleting ? DELETE_SPEED_MS : TYPE_SPEED_MS);
-    }
-    setTimeout(typeLoop, 1000);
-
-    /* ═══════════════════════════════════════
-       COUNTER ANIMATION
-    ═══════════════════════════════════════ */
+    /* Counters */
     function animateCounter(el) {
       const target = +el.dataset.target;
-      const duration = 1800;
       const start = performance.now();
-      function step(now) {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        const ease = 1 - Math.pow(1 - progress, 3);
+      const dur = 1600;
+      const tick = (now) => {
+        const t = Math.min((now - start) / dur, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
         el.textContent = Math.round(ease * target);
-        if (progress < 1) requestAnimationFrame(step);
-      }
-      requestAnimationFrame(step);
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
     }
+    document.querySelectorAll('[data-target]').forEach(animateCounter);
 
-    /* ═══════════════════════════════════════
-       INTERSECTION OBSERVER (reveal + counters)
-    ═══════════════════════════════════════ */
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          entry.target.querySelectorAll('[data-target]').forEach(animateCounter);
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: REVEAL_THRESHOLD });
-
-    document.querySelectorAll('.reveal, .reveal-child').forEach(el => revealObserver.observe(el));
-    document.querySelectorAll('.hero-metrics [data-target]').forEach(animateCounter);
-
-    /* ═══════════════════════════════════════
-       MOBILE NAV
-    ═══════════════════════════════════════ */
+    /* Mobile nav */
     const toggle = document.getElementById('nav-toggle');
-    const menu   = document.getElementById('nav-menu');
+    const menu = document.getElementById('nav-menu');
     if (toggle && menu) {
       toggle.addEventListener('click', () => {
         const open = menu.classList.toggle('open');
         toggle.setAttribute('aria-expanded', open);
       });
       menu.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => { menu.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); });
+        a.addEventListener('click', () => {
+          menu.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
       });
     }
 
-    /* ═══════════════════════════════════════
-       SCROLL SPY + NAVBAR
-    ═══════════════════════════════════════ */
-    const sections = document.querySelectorAll('section[id], header[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
-    const scrollSpy = new IntersectionObserver((entries) => {
+    /* Scroll spy */
+    const links = document.querySelectorAll('.nav-links a');
+    const spy = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(a => a.classList.remove('active'));
-          const link = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
-          if (link) link.classList.add('active');
+        if (!entry.isIntersecting) return;
+        links.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('section[id]').forEach(s => spy.observe(s));
+
+    /* Reveal on scroll */
+    const reveal = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          reveal.unobserve(e.target);
         }
       });
-    }, { rootMargin: SCROLL_SPY_MARGIN });
-    sections.forEach(s => scrollSpy.observe(s));
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.section, .pillar, .pipe-step, .bento-item, .signal-card, .ethics-panel')
+      .forEach(el => {
+        el.classList.add('reveal-up');
+        reveal.observe(el);
+      });
 
-    const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+    /* Radar scan status flicker */
+    const status = document.getElementById('scan-status');
+    const states = ['ACTIVE', 'SCANNING', 'LOCKED', 'ACTIVE'];
+    let si = 0;
+    setInterval(() => {
+      if (!status) return;
+      si = (si + 1) % states.length;
+      status.textContent = states[si];
+    }, 2800);
 
+    /* Subtle parallax on radar blips */
+    const stage = document.querySelector('.radar-stage');
+    if (stage && window.matchMedia('(pointer:fine)').matches) {
+      stage.addEventListener('mousemove', (e) => {
+        const r = stage.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        stage.style.setProperty('--tilt-x', `${x * 8}deg`);
+        stage.style.setProperty('--tilt-y', `${-y * 8}deg`);
+      });
+      stage.addEventListener('mouseleave', () => {
+        stage.style.setProperty('--tilt-x', '0deg');
+        stage.style.setProperty('--tilt-y', '0deg');
+      });
+    }
   })();
   </script>
 </body>
